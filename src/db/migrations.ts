@@ -31,5 +31,13 @@ export function runMigrations() {
     );
   `);
 
+  sqlite.execSync(`
+    CREATE TABLE IF NOT EXISTS progress_photos (
+      id           TEXT PRIMARY KEY NOT NULL,
+      uri          TEXT NOT NULL,
+      created_at   TEXT NOT NULL
+    );
+  `);
+
   console.log("✅ Migrations completed");
 }
