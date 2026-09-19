@@ -49,7 +49,7 @@ export const insertWorkoutWithExercises = (
       await tx.insert(exercises).values(
         exercisesData.map((ex, index) => ({
           ...ex,
-          workoutId: workoutData.id,
+          workoutId: workoutData.id as string,
           orderIndex: index,
         })),
       );

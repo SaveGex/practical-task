@@ -1,3 +1,4 @@
+import { relations } from "drizzle-orm";
 import { int, sqliteTable, text } from "drizzle-orm/sqlite-core";
 
 export const workouts = sqliteTable("workouts", {
@@ -33,9 +34,25 @@ export const progress_photos = sqliteTable("progress_photos", {
   created_at: text("created_at").notNull(),
 });
 
+export const workoutsRelations = relations(workouts, ({ many }) => ({
+  exercises: many(exercises),
+}));
+
+export const exercisesRelations = relations(exercises, ({ one }) => ({
+  workout: one(workouts, {
+    fields: [exercises.workoutId],
+    references: [workouts.id],
+  }),
+}));
+
 export type WorkoutRow = typeof workouts.$inferSelect;
 export type NewWorkout = typeof workouts.$inferInsert;
 export type ExerciseRow = typeof exercises.$inferSelect;
 export type NewExercise = typeof exercises.$inferInsert;
 export type ProgressPhotoRow = typeof progress_photos.$inferSelect;
 export type NewProgressPhoto = typeof progress_photos.$inferInsert;
+
+
+export type WorkoutWithExercises = WorkoutRow & {
+  exercises: ExerciseRow[];
+};

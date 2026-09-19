@@ -1,6 +1,8 @@
+import { drizzle } from "drizzle-orm/expo-sqlite";
 import { openDatabaseSync } from "expo-sqlite";
+import * as schema from "./schema"; // Вкажіть правильний шлях до файлу зі схемою
 
-const sqlite = openDatabaseSync("fittrack_group.db");
+export const sqlite = openDatabaseSync("fittrack_group.db");
 
 export function runMigrations() {
   sqlite.execSync("PRAGMA foreign_keys = ON;");
@@ -41,3 +43,6 @@ export function runMigrations() {
 
   console.log("✅ Migrations completed");
 }
+
+// Експортуємо клієнт Drizzle із зареєстрованою схемою
+export const db = drizzle(sqlite, { schema });
